@@ -10,7 +10,7 @@ export default {
     this.load.image("background3", require("../assets/background/back3.png"));
     this.load.image("background4", require("../assets/background/back4.png"));
     this.load.image("background5", require("../assets/background/back5.png"));
-    this.load.image("title", require("../assets/background/title.png"));
+    this.load.image("title", require("../assets/background/title2.png"));
 
     var rect = new Phaser.Geom.Rectangle(200, 285, 400, 30);
     var gfx = this.add.graphics();
