@@ -63,6 +63,17 @@ export default {
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
         this.physics.add.collider(this.enemies, this.player);
+/*
+        this.anims.create({
+            key: "run",
+            frames: this.anims.generateFrameNumbers("doux", {
+                start: 0,
+                end: 5
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+*/
     },
     update() {
         this.playerJumpCnt += 1;
@@ -111,8 +122,7 @@ export default {
         this.background5.tilePositionX += this.backgroundSpeed / 5;
         this.ground.tilePositionX += this.backgroundSpeed;
 
-
-
+        //this.player.anims.play("run", true);
     }
 };
 //export default GameScene;
