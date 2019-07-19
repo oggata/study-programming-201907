@@ -9,6 +9,7 @@ export default {
         this.playerJumpCnt = 0;
         this.isPointerDown = false;
         this.touchingTime = 0;
+        this.score = 0;
 
         this.load.image("background1", require("../assets/background/back1.png"));
         this.load.image("background2", require("../assets/background/back2.png"));
@@ -64,7 +65,6 @@ export default {
         this.physics.add.collider(this.enemies, this.player);
     },
     update() {
-
         this.playerJumpCnt += 1;
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
