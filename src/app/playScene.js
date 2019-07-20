@@ -39,11 +39,13 @@ export default {
         this.background4.setScale(2);
         this.background3.setScale(2);
         this.background2.setScale(2);
+        /*
         this.background5.setVisible(false);
         this.background4.setVisible(false);
         this.background3.setVisible(false);
         this.background2.setVisible(false);
         this.background1.setVisible(false);
+        */
         this.physics.add.existing(this.ground);
         this.ground.body.immovable = true;
         this.ground.body.moves = false;
@@ -63,7 +65,7 @@ export default {
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
         this.physics.add.collider(this.enemies, this.player);
-/*
+
         this.anims.create({
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
@@ -73,7 +75,38 @@ export default {
             frameRate: 10,
             repeat: -1
         });
-*/
+        this.anims.create({
+            key: "enemy_run",
+            frames: this.anims.generateFrameNumbers("enemy", {
+                start: 0,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.timedEvent2 = this.time.addEvent({
+            delay: 1000,
+            callback: onEventEnemy,
+            callbackScope: this,
+            loop: true
+        });
+
+        function onEventEnemy() {
+            this.timedEvent2.reset({
+                delay: 2500,
+                callback: onEventEnemy,
+                callbackScope: this,
+                loop: true
+            });
+            let enemy = this.enemies.create(1000, Phaser.Math.Between(120, 500), "enemy");
+            enemy.setScale(0.7);
+            enemy.body.setAllowGravity(false)
+            //enemy.anims.play("enemy_run", true);
+            enemy.setSize(120, 120, true);
+            enemy.setOffset(100, 140);
+            this.enemies.setVelocityX(Phaser.Math.Between(-200, -500));
+        }
     },
     update() {
         this.playerJumpCnt += 1;
@@ -84,6 +117,7 @@ export default {
             if (this.score >= 50) {
                 var pointer = this.input.activePointer;
                 if (pointer.isDown) {
+                    //console.log("aa");
                     var touchX = pointer.x;
                     var touchY = pointer.y;
                     this.touchingTime += 1;
@@ -110,7 +144,7 @@ export default {
                 this.player.setVelocityY(-500);
             } else if (this.isPointerDown && this.player.body.touching.down && this.playerJumpCnt <= 30) {
                 this.isPointerDown = false;
-                this.player.setVelocityY(-1000);
+                this.player.setVelocityY(-1400);
             }
         }
 
@@ -122,7 +156,7 @@ export default {
         this.background5.tilePositionX += this.backgroundSpeed / 5;
         this.ground.tilePositionX += this.backgroundSpeed;
 
-        //this.player.anims.play("run", true);
+        this.player.anims.play("run", true);
     }
 };
 //export default GameScene;
