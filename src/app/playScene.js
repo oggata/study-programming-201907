@@ -28,6 +28,14 @@ export default {
         this.load.image("platform", require("../assets/background/platform.png"));
         this.load.image("gameover", require("../assets/background/gameover.png"));
         this.damageTime = 0;
+
+        this.bones = [];
+        this.load.image("bone1", require("../assets/sprites/bone/bone1.png"));
+        this.load.image("bone2", require("../assets/sprites/bone/bone2.png"));
+        this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
+        this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
+        this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
+
         this.load.spritesheet("coin", require("../assets/sprites/pipo-gwspinitem002.png"), {
             frameWidth: 192,
             frameHeight: 192
@@ -86,6 +94,7 @@ export default {
         this.coins = this.physics.add.group();
         this.fires = this.physics.add.group();
         this.enemyFires = this.physics.add.group();
+        this.bones = this.physics.add.group();
         this.playerJumpCnt = 0;
         this.timedEvent1 = this.time.addEvent({
             delay: 1000,
@@ -299,6 +308,19 @@ export default {
                 this.timedEvent2.paused = true;
                 this.timedEvent3.paused = true;
                 this.player.anims.play("death");
+
+for(var i=1;i<=5;i++){
+    var boneNum =Phaser.Math.Between(1, 5);
+    var boneId = "bone" + i;
+    let bone = this.bones.create(this.player.x+Phaser.Math.Between(0, 100)-50, this.player.y + Phaser.Math.Between(0, 100)-50,boneId);
+    bone.getBounds();
+    bone.setBounce(0.7);
+    bone.setCollideWorldBounds(true);
+    bone.setOffset(0, 0);
+}
+
+
+
                 this.backgroundSpeed = 0;
                 this.ground.tilePositionX += 1;
                 let restart = this.add.image(400, 300, "gameover");
@@ -334,6 +356,12 @@ export default {
         this.physics.add.collider(this.player, this.enemies, damagePlayerByEnemy, null, this);
         this.physics.add.collider(this.player, this.enemyFires, damagePlayerByFire, null, this);
         this.physics.add.collider(this.player, this.coins, hitPlayerToCoin, null, this);
+
+
+
+this.physics.add.collider(this.bones, this.ground);
+this.physics.add.collider(this.bones, this.bones);
+
         this.scoreText = this.add.text(16, 16, "SCORE: 0", {
             fontSize: "32px",
             fill: "#FFFFFF"
