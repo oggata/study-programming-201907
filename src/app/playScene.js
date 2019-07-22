@@ -96,25 +96,28 @@ export default {
         this.enemyFires = this.physics.add.group();
         this.bones = this.physics.add.group();
         this.playerJumpCnt = 0;
+        /*
         this.timedEvent1 = this.time.addEvent({
             delay: 1000,
             callback: onEventFire,
             callbackScope: this,
             loop: true
         });
+        */
         this.timedEvent2 = this.time.addEvent({
             delay: 1000,
             callback: onEventEnemy,
             callbackScope: this,
             loop: true
         });
+        /*
         this.timedEvent3 = this.time.addEvent({
             delay: 1000,
             callback: onEventEnemyFire,
             callbackScope: this,
             loop: true
         });
-
+        */
         function onEventEnemy() {
             this.timedEvent2.reset({
                 delay: Phaser.Math.Between(1200, 1700),
@@ -305,8 +308,9 @@ export default {
             if (this.scoreLifeAmount <= 0) {
                 music.stop();
                 this.isGameOver = true;
-                this.timedEvent2.paused = true;
-                this.timedEvent3.paused = true;
+//this.timedEvent1.paused = true;
+//this.timedEvent2.paused = true;
+//this.timedEvent3.paused = true;
                 this.player.anims.play("death");
 
 for(var i=1;i<=5;i++){
