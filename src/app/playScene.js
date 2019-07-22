@@ -27,14 +27,11 @@ export default {
         this.load.image("background5", require("../assets/background/back5.png"));
         this.load.image("platform", require("../assets/background/platform.png"));
         this.load.image("gameover", require("../assets/background/gameover.png"));
-
         this.damageTime = 0;
-
         this.load.spritesheet("coin", require("../assets/sprites/pipo-gwspinitem002.png"), {
             frameWidth: 192,
             frameHeight: 192
         });
-
         this.load.spritesheet("fire", require("../assets/sprites/pipo-btleffect022.png"), {
             frameWidth: 120,
             frameHeight: 120
@@ -53,16 +50,12 @@ export default {
         });
         this.load.audio("music", require("../assets/bgm_maoudamashii_ethnic11.mp3"));
         this.load.audio("jump", require("../assets/se_maoudamashii_system10.mp3"));
-        //this.load.audio("death", "assets/death.mp3");
-        //this.load.audio("pickup", "assets/pickup.wav");
-
         this.hogeTime = 0;
     },
     create() {
         let music = this.sound.add('music')
         music.setLoop(true)
         music.play();
-
         //this.background5 = this.add.tileSprite(400, 300, 1000, 600, "background5");
         this.background5 = this.add.tileSprite(400, 300, 667, 250, "background5");
         this.background4 = this.add.tileSprite(400, 300, 667, 250, "background4");
@@ -94,14 +87,12 @@ export default {
         this.fires = this.physics.add.group();
         this.enemyFires = this.physics.add.group();
         this.playerJumpCnt = 0;
-        
-            this.timedEvent1 = this.time.addEvent({
-              delay: 1000,
-              callback: onEventFire,
-              callbackScope: this,
-              loop: true
-            });
-        
+        this.timedEvent1 = this.time.addEvent({
+            delay: 1000,
+            callback: onEventFire,
+            callbackScope: this,
+            loop: true
+        });
         this.timedEvent2 = this.time.addEvent({
             delay: 1000,
             callback: onEventEnemy,
@@ -223,7 +214,6 @@ export default {
             frameRate: 10,
             repeat: -1
         });
-
         this.anims.create({
             key: "coin",
             frames: this.anims.generateFrameNumbers("coin", {
@@ -242,7 +232,7 @@ export default {
 
         function damageEnemyByPlayer(enemy, fire) {
             for (var i = 0; i < 5; i++) {
-                let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100)-50, enemy.y + Phaser.Math.Between(0, 100)-50, "coin");
+                let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
                 coin.setScale(0.2);
                 coin.setCircle(5);
                 coin.anims.play("coin", true);
@@ -258,16 +248,12 @@ export default {
         }
 
         function damagePlayerByFire(player, enemyFire) {
-            if(this.damageTime == 0){
+            if (this.damageTime == 0) {
                 this.damageTime = 60;
                 this.scoreLifeAmount -= 1;
             }
-
-
             enemyFire.destroy();
-
-
-            if(this.scoreLifeAmount <= 0){
+            if (this.scoreLifeAmount <= 0) {
                 music.stop();
                 this.isGameOver = true;
                 this.timedEvent2.paused = true;
@@ -286,31 +272,28 @@ export default {
                 });
                 restart.on("pointerover", () => restart.setTint(0xcccccc));
                 restart.on("pointerout", () => restart.setTint(0xffffff));
-
             }
-            if(this.scoreLifeAmount == 0){
+            if (this.scoreLifeAmount == 0) {
                 this.lifeAmountText.setText("LIFE:");
             }
-            if(this.scoreLifeAmount == 1){
+            if (this.scoreLifeAmount == 1) {
                 this.lifeAmountText.setText("LIFE:★");
             }
-            if(this.scoreLifeAmount == 2){
+            if (this.scoreLifeAmount == 2) {
                 this.lifeAmountText.setText("LIFE:★★");
             }
-            if(this.scoreLifeAmount == 3){
+            if (this.scoreLifeAmount == 3) {
                 this.lifeAmountText.setText("LIFE:★★★");
             }
         }
 
         function damagePlayerByEnemy(player, enemy) {
-
-            if(this.damageTime == 0){
+            if (this.damageTime == 0) {
                 this.damageTime = 60;
                 this.scoreLifeAmount -= 1;
             }
             enemy.destroy();
-
-            if(this.scoreLifeAmount <= 0){
+            if (this.scoreLifeAmount <= 0) {
                 music.stop();
                 this.isGameOver = true;
                 this.timedEvent2.paused = true;
@@ -330,24 +313,23 @@ export default {
                 restart.on("pointerover", () => restart.setTint(0xcccccc));
                 restart.on("pointerout", () => restart.setTint(0xffffff));
             }
-            if(this.scoreLifeAmount == 0){
+            if (this.scoreLifeAmount == 0) {
                 this.lifeAmountText.setText("LIFE:");
             }
-            if(this.scoreLifeAmount == 1){
+            if (this.scoreLifeAmount == 1) {
                 this.lifeAmountText.setText("LIFE:★");
             }
-            if(this.scoreLifeAmount == 2){
+            if (this.scoreLifeAmount == 2) {
                 this.lifeAmountText.setText("LIFE:★★");
             }
-            if(this.scoreLifeAmount == 3){
+            if (this.scoreLifeAmount == 3) {
                 this.lifeAmountText.setText("LIFE:★★★");
             }
         }
-
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
         this.physics.add.collider(this.fires, this.ground);
-        this.physics.add.collider(this.coins, this.ground);        
+        this.physics.add.collider(this.coins, this.ground);
         this.physics.add.collider(this.enemies, this.fires, damageEnemyByPlayer, null, this);
         this.physics.add.collider(this.player, this.enemies, damagePlayerByEnemy, null, this);
         this.physics.add.collider(this.player, this.enemyFires, damagePlayerByFire, null, this);
@@ -364,19 +346,16 @@ export default {
         this.cameras.main.setBounds(0, 0, 800, 600);
     },
     update() {
-
-console.log(this.damageTime);
-        this.damageTime-=1;
-        if(this.damageTime<=0){
-            this.damageTime=0;
+        console.log(this.damageTime);
+        this.damageTime -= 1;
+        if (this.damageTime <= 0) {
+            this.damageTime = 0;
         }
-        if(this.damageTime>0){
+        if (this.damageTime > 0) {
             this.player.alpha = 0.2;
-        }else{
+        } else {
             this.player.alpha = 1;
         }
-
-
         this.playerJumpCnt += 1;
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
