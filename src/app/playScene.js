@@ -9,14 +9,14 @@ export default {
         this.isPointerDown = false;
         this.touchingTime = 0;
 
-        //this.load.image("background5", require("../assets/background/back5.png"));
+        this.load.image("background5", require("../assets/background/back5.png"));
         this.load.image("platform", require("../assets/background/platform.png"));
 
         this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo5.png"), {
+        this.load.spritesheet("doux", require("../assets/sprites/kyo7.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
@@ -28,13 +28,12 @@ export default {
 
         this.ground.body.immovable = true;
         this.ground.body.moves = false;
-
-/*1
+/*
         this.player = this.physics.add.sprite(230, 100, "doux");
-        this.player.getBounds();
+        //this.player.getBounds();
         //this.player.setBounce(0.7);
         //this.player.setCollideWorldBounds(true);
-        this.player.setScale(1);
+        this.player.setScale(0.7);
         this.player.setSize(100, 180, true);
         this.player.setOffset(130, 140);
         this.playerJumpCnt = 0;
@@ -42,32 +41,29 @@ export default {
         this.cameras.main.setBounds(0, 0, 800, 600);
 */
 
-
-/*3
+/*
         this.enemies = this.physics.add.group();
         for(var i=0;i<=5;i++){
             var enemy = this.enemies.create(Phaser.Math.Between(100, 800), Phaser.Math.Between(50, 120), "enemy");
             enemy.getBounds();
             enemy.setBounce(1);
-            //enemy.setCollideWorldBounds(true);
+            enemy.setCollideWorldBounds(true);
             //enemy.body.setAllowGravity(false);
             this.enemies.setVelocityX(Phaser.Math.Between(-200, -500));
-            enemy.setScale(0.7);
+            enemy.setScale(0.42);
             enemy.setSize(120, 120, true);
             enemy.setOffset(100, 140);
         }
 */
 
-
-/*2
+/*
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
         this.physics.add.collider(this.enemies, this.player);
 */
-
     },
     update() {
-        /*
+/*
         this.playerJumpCnt += 1;
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
@@ -105,7 +101,7 @@ export default {
                 this.player.setVelocityY(-1000);
             }
         }
-        */
+*/
     }
 };
 //export default GameScene;
