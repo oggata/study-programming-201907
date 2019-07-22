@@ -10,26 +10,20 @@ export default {
     this.background3 =this.add.image(400, 300, "background3");
     this.background2 =this.add.image(400, 300, "background2");
     this.background1 =this.add.image(400, 300, "background1");
-    //this.add.image(400, 300, "title");
-
+    this.background0 =this.add.image(400, 300, "white");
 
 this.background5.setScale(2);
 this.background4.setScale(2);
 this.background3.setScale(2);
 this.background2.setScale(2);
 
-
-
       let title = this.add.image(400, 300, "title");
-      //title.setScale(4);
       title.setInteractive();
       title.on("pointerdown", () => {
 
       });
       title.on("pointerover", () => title.setTint(0xcccccc));
       title.on("pointerout", () => title.setTint(0xffffff));
-      //title.add.on("pointerover", () => restart.setTint(0xcccccc));
-      //title.add.on("pointerout", () => restart.setTint(0xffffff));
 
     title.on(
       "pointerdown",
