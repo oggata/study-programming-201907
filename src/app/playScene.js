@@ -16,13 +16,13 @@ export default {
         this.load.image("background3", require("../assets/background/back3.png"));
         this.load.image("background4", require("../assets/background/back4.png"));
         this.load.image("background5", require("../assets/background/back5.png"));
-        this.load.image("platform", require("../assets/background/platform-red.png"));
+        this.load.image("platform", require("../assets/background/platform.png"));
 
         this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo5.png"), {
+        this.load.spritesheet("doux", require("../assets/sprites/kyo7.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
@@ -52,7 +52,7 @@ export default {
         this.player.getBounds();
         this.player.setBounce(0.7);
         this.player.setCollideWorldBounds(true);
-        this.player.setScale(1);
+        this.player.setScale(0.7);
         this.player.setSize(100, 180, true);
         this.player.setOffset(130, 140);
         this.playerJumpCnt = 0;
@@ -63,7 +63,7 @@ export default {
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
         this.physics.add.collider(this.enemies, this.player);
-/*
+
         this.anims.create({
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
@@ -73,7 +73,7 @@ export default {
             frameRate: 10,
             repeat: -1
         });
-*/
+
     },
     update() {
         this.playerJumpCnt += 1;
