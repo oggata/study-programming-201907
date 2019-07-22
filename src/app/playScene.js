@@ -10,6 +10,7 @@ export default {
         this.isPointerDown = false;
         this.touchingTime = 0;
         this.score = 0;
+        this.scoreLifeAmount = 1;
 
         this.load.image("background1", require("../assets/background/back1.png"));
         this.load.image("background2", require("../assets/background/back2.png"));
@@ -17,12 +18,22 @@ export default {
         this.load.image("background4", require("../assets/background/back4.png"));
         this.load.image("background5", require("../assets/background/back5.png"));
         this.load.image("platform", require("../assets/background/platform-red.png"));
+        this.load.image("gameover", require("../assets/background/gameover.png"));
+
+
+this.bones = [];
+this.load.image("bone1", require("../assets/sprites/bone/bone1.png"));
+this.load.image("bone2", require("../assets/sprites/bone/bone2.png"));
+this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
+this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
+this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
+
 
         this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo5.png"), {
+        this.load.spritesheet("doux", require("../assets/sprites/kyo7.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
@@ -39,13 +50,7 @@ export default {
         this.background4.setScale(2);
         this.background3.setScale(2);
         this.background2.setScale(2);
-        /*
-        this.background5.setVisible(false);
-        this.background4.setVisible(false);
-        this.background3.setVisible(false);
-        this.background2.setVisible(false);
-        this.background1.setVisible(false);
-        */
+
         this.physics.add.existing(this.ground);
         this.ground.body.immovable = true;
         this.ground.body.moves = false;
@@ -54,7 +59,7 @@ export default {
         this.player.getBounds();
         this.player.setBounce(0.7);
         this.player.setCollideWorldBounds(true);
-        this.player.setScale(1);
+        this.player.setScale(0.75);
         this.player.setSize(100, 180, true);
         this.player.setOffset(130, 140);
         this.playerJumpCnt = 0;
@@ -62,9 +67,12 @@ export default {
         this.cameras.main.setBounds(0, 0, 800, 600);
 
         this.enemies = this.physics.add.group();
+this.bones = this.physics.add.group();
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
-        this.physics.add.collider(this.enemies, this.player);
+this.physics.add.collider(this.bones, this.ground);
+        this.physics.add.collider(this.player, this.enemies, damagePlayerByEnemy, null, this);
+this.physics.add.collider(this.bones, this.bones);
 
         this.anims.create({
             key: "run",
@@ -79,6 +87,15 @@ export default {
             key: "enemy_run",
             frames: this.anims.generateFrameNumbers("enemy", {
                 start: 0,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "death",
+            frames: this.anims.generateFrameNumbers("doux", {
+                start: 6,
                 end: 6
             }),
             frameRate: 10,
@@ -100,12 +117,48 @@ export default {
                 loop: true
             });
             let enemy = this.enemies.create(1000, Phaser.Math.Between(120, 500), "enemy");
-            enemy.setScale(0.7);
+            enemy.setScale(0.42);
             enemy.body.setAllowGravity(false)
             //enemy.anims.play("enemy_run", true);
             enemy.setSize(120, 120, true);
             enemy.setOffset(100, 140);
             this.enemies.setVelocityX(Phaser.Math.Between(-200, -500));
+        }
+
+        function damagePlayerByEnemy(player, enemy) {
+            enemy.destroy();
+
+
+/*
+for(var i=1;i<=5;i++){
+    var boneNum =Phaser.Math.Between(1, 5);
+    var boneId = "bone" + i;
+    let bone = this.bones.create(this.player.x+Phaser.Math.Between(0, 100)-50, this.player.y + Phaser.Math.Between(0, 100)-50,boneId);
+    bone.getBounds();
+    bone.setBounce(0.7);
+    bone.setCollideWorldBounds(true);
+    bone.setOffset(0, 0);
+}
+this.player.anims.play("death");
+*/
+
+                this.isGameOver = true;
+                this.timedEvent2.paused = true;
+                //this.timedEvent3.paused = true;
+
+                this.backgroundSpeed = 0;
+                this.ground.tilePositionX += 1;
+                let restart = this.add.image(400, 300, "gameover");
+                restart.setInteractive();
+                restart.on("pointerdown", () => {
+                    this.scene.start("play");
+                    this.isGameOver = false;
+                    this.score = 0;
+                    this.scoreLifeAmount = 3;
+                    this.gameTime = 0;
+                });
+                restart.on("pointerover", () => restart.setTint(0xcccccc));
+                restart.on("pointerout", () => restart.setTint(0xffffff));
         }
     },
     update() {
@@ -146,6 +199,7 @@ export default {
                 this.isPointerDown = false;
                 this.player.setVelocityY(-1400);
             }
+            this.player.anims.play("run", true);
         }
 
 
@@ -156,7 +210,7 @@ export default {
         this.background5.tilePositionX += this.backgroundSpeed / 5;
         this.ground.tilePositionX += this.backgroundSpeed;
 
-        this.player.anims.play("run", true);
+        
     }
 };
 //export default GameScene;
