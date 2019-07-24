@@ -13,7 +13,7 @@ export default {
         this.score = 0;
         this.scoreText = "";
         this.lifeAmountText = "";
-        this.scoreLifeAmount = 3;
+        this.scoreLifeAmount = 1;
         this.gameOverText = "";
         this.timedEvent = null;
         this.timedEvent2 = null;
@@ -63,7 +63,7 @@ export default {
     create() {
         let music = this.sound.add('music')
         music.setLoop(true)
-        music.play();
+        //music.play();
         //this.background5 = this.add.tileSprite(400, 300, 1000, 600, "background5");
         this.background5 = this.add.tileSprite(400, 300, 667, 250, "background5");
         this.background4 = this.add.tileSprite(400, 300, 667, 250, "background4");
@@ -243,6 +243,9 @@ export default {
         }
 
         function damageEnemyByPlayer(enemy, fire) {
+            this.score += 5;
+            this.scoreText.setText("SCORE: " + this.score);
+            /*
             for (var i = 0; i < 5; i++) {
                 let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
                 coin.setScale(0.2);
@@ -255,6 +258,7 @@ export default {
                 coin.setBounce(1);
                 coin.setCollideWorldBounds(true);
             }
+            */
             enemy.destroy();
             fire.destroy();
         }
@@ -362,7 +366,6 @@ for(var i=1;i<=5;i++){
         this.physics.add.collider(this.player, this.coins, hitPlayerToCoin, null, this);
 
 
-
 this.physics.add.collider(this.bones, this.ground);
 this.physics.add.collider(this.bones, this.bones);
 
@@ -421,12 +424,12 @@ this.physics.add.collider(this.bones, this.bones);
                 this.isPointerDown = false;
                 this.playerJumpCnt = 1;
                 let jumpSE = this.sound.add("jump");
-                jumpSE.play();
+                //jumpSE.play();
                 this.player.setVelocityY(-500);
             } else if (this.isPointerDown && this.player.body.touching.down && this.playerJumpCnt <= 30) {
                 this.isPointerDown = false;
                 let jumpSE = this.sound.add("jump");
-                jumpSE.play();
+                //jumpSE.play();
                 this.player.setVelocityY(-1000);
             }
             this.player.anims.play("run", true);
