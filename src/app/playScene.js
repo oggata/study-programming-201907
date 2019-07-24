@@ -17,7 +17,7 @@ export default {
         this.load.image("background3", require("../assets/background/back3.png"));
         this.load.image("background4", require("../assets/background/back4.png"));
         this.load.image("background5", require("../assets/background/back5.png"));
-        this.load.image("platform", require("../assets/background/platform-red.png"));
+        
         this.load.image("gameover", require("../assets/background/gameover.png"));
 
 
