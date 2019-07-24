@@ -11,24 +11,18 @@ export default {
         this.touchingTime = 0;
         this.score = 0;
         this.scoreLifeAmount = 1;
-
         this.load.image("background1", require("../assets/background/back1.png"));
         this.load.image("background2", require("../assets/background/back2.png"));
         this.load.image("background3", require("../assets/background/back3.png"));
         this.load.image("background4", require("../assets/background/back4.png"));
         this.load.image("background5", require("../assets/background/back5.png"));
-        
         this.load.image("gameover", require("../assets/background/gameover.png"));
-
-
-this.bones = [];
-this.load.image("bone1", require("../assets/sprites/bone/bone1.png"));
-this.load.image("bone2", require("../assets/sprites/bone/bone2.png"));
-this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
-this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
-this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
-
-
+        this.bones = [];
+        this.load.image("bone1", require("../assets/sprites/bone/bone1.png"));
+        this.load.image("bone2", require("../assets/sprites/bone/bone2.png"));
+        this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
+        this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
+        this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
         this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
             frameWidth: 340,
             frameHeight: 340
@@ -37,7 +31,6 @@ this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
             frameWidth: 340,
             frameHeight: 340
         });
-
     },
     create() {
         this.background5 = this.add.tileSprite(400, 300, 667, 250, "background5");
@@ -50,11 +43,9 @@ this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
         this.background4.setScale(2);
         this.background3.setScale(2);
         this.background2.setScale(2);
-
         this.physics.add.existing(this.ground);
         this.ground.body.immovable = true;
         this.ground.body.moves = false;
-
         this.player = this.physics.add.sprite(230, 100, "doux");
         this.player.getBounds();
         this.player.setBounce(0.7);
@@ -65,15 +56,15 @@ this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
         this.playerJumpCnt = 0;
         this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
         this.cameras.main.setBounds(0, 0, 800, 600);
-
         this.enemies = this.physics.add.group();
-this.bones = this.physics.add.group();
+        this.bones = this.physics.add.group();
+
         this.physics.add.collider(this.player, this.ground);
         this.physics.add.collider(this.enemies, this.ground);
-this.physics.add.collider(this.bones, this.ground);
-        this.physics.add.collider(this.player, this.enemies, damagePlayerByEnemy, null, this);
-this.physics.add.collider(this.bones, this.bones);
-
+        this.physics.add.collider(this.bones, this.ground);
+        //this.physics.add.collider(this.player, this.enemies, damagePlayerByEnemy, null, this);
+        this.physics.add.collider(this.bones, this.bones);
+        
         this.anims.create({
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
@@ -101,14 +92,14 @@ this.physics.add.collider(this.bones, this.bones);
             frameRate: 10,
             repeat: -1
         });
-
+/*
         this.timedEvent2 = this.time.addEvent({
             delay: 1000,
             callback: onEventEnemy,
             callbackScope: this,
             loop: true
         });
-
+*/
         function onEventEnemy() {
             this.timedEvent2.reset({
                 delay: 2500,
@@ -127,38 +118,34 @@ this.physics.add.collider(this.bones, this.bones);
 
         function damagePlayerByEnemy(player, enemy) {
             enemy.destroy();
-
-
-/*
-for(var i=1;i<=5;i++){
-    var boneNum =Phaser.Math.Between(1, 5);
-    var boneId = "bone" + i;
-    let bone = this.bones.create(this.player.x+Phaser.Math.Between(0, 100)-50, this.player.y + Phaser.Math.Between(0, 100)-50,boneId);
-    bone.getBounds();
-    bone.setBounce(0.7);
-    bone.setCollideWorldBounds(true);
-    bone.setOffset(0, 0);
-}
-this.player.anims.play("death");
-*/
-
-                this.isGameOver = true;
-                this.timedEvent2.paused = true;
-                //this.timedEvent3.paused = true;
-
-                this.backgroundSpeed = 0;
-                this.ground.tilePositionX += 1;
-                let restart = this.add.image(400, 300, "gameover");
-                restart.setInteractive();
-                restart.on("pointerdown", () => {
-                    this.scene.start("play");
-                    this.isGameOver = false;
-                    this.score = 0;
-                    this.scoreLifeAmount = 3;
-                    this.gameTime = 0;
-                });
-                restart.on("pointerover", () => restart.setTint(0xcccccc));
-                restart.on("pointerout", () => restart.setTint(0xffffff));
+            /*
+            for(var i=1;i<=5;i++){
+                var boneNum =Phaser.Math.Between(1, 5);
+                var boneId = "bone" + i;
+                let bone = this.bones.create(this.player.x+Phaser.Math.Between(0, 100)-50, this.player.y + Phaser.Math.Between(0, 100)-50,boneId);
+                bone.getBounds();
+                bone.setBounce(0.7);
+                bone.setCollideWorldBounds(true);
+                bone.setOffset(0, 0);
+            }
+            this.player.anims.play("death");
+            */
+            this.isGameOver = true;
+            //this.timedEvent2.paused = true;
+            //this.timedEvent3.paused = true;
+            this.backgroundSpeed = 0;
+            this.ground.tilePositionX += 1;
+            let restart = this.add.image(400, 300, "gameover");
+            restart.setInteractive();
+            restart.on("pointerdown", () => {
+                this.scene.start("play");
+                this.isGameOver = false;
+                this.score = 0;
+                this.scoreLifeAmount = 3;
+                this.gameTime = 0;
+            });
+            restart.on("pointerover", () => restart.setTint(0xcccccc));
+            restart.on("pointerout", () => restart.setTint(0xffffff));
         }
     },
     update() {
@@ -201,16 +188,12 @@ this.player.anims.play("death");
             }
             this.player.anims.play("run", true);
         }
-
-
         this.background1.tilePositionX += this.backgroundSpeed * 2;
         this.background2.tilePositionX += this.backgroundSpeed;
         this.background3.tilePositionX += this.backgroundSpeed / 2;
         this.background4.tilePositionX += this.backgroundSpeed / 5;
         this.background5.tilePositionX += this.backgroundSpeed / 5;
         this.ground.tilePositionX += this.backgroundSpeed;
-
-        
     }
 };
 //export default GameScene;
