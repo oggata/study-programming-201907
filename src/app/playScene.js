@@ -25,53 +25,7 @@ export default {
         this.damageTime = 0;
         this.bones = [];
         this.itemTime = 0;
-
-
         this.invincibleTime = 0;
-
-        /*
-        this.load.image("background1", require("../assets/background/back1.png"));
-        this.load.image("background2", require("../assets/background/back2.png"));
-        this.load.image("background3", require("../assets/background/back3.png"));
-        this.load.image("background4", require("../assets/background/back4.png"));
-        this.load.image("background5", require("../assets/background/back5.png"));
-        this.load.image("platform", require("../assets/background/platform.png"));
-        this.load.image("gameover", require("../assets/background/gameover.png"));
-        this.load.image("bone1", require("../assets/sprites/bone/bone1.png"));
-        this.load.image("bone2", require("../assets/sprites/bone/bone2.png"));
-        this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
-        this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
-        this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
-        this.load.spritesheet("coin", require("../assets/sprites/pipo-gwspinitem002.png"), {
-            frameWidth: 192,
-            frameHeight: 192
-        });
-        this.load.spritesheet("fire", require("../assets/sprites/pipo-btleffect022.png"), {
-            frameWidth: 120,
-            frameHeight: 120
-        });
-        this.load.spritesheet("enemy_fire", require("../assets/sprites/pipo-btleffect024.png"), {
-            frameWidth: 120,
-            frameHeight: 120
-        });
-        this.load.spritesheet("damaged-effect", require("../assets/sprites/pipo-btleffect003.png"), {
-            frameWidth: 120,
-            frameHeight: 120
-        });
-        this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
-            frameWidth: 340,
-            frameHeight: 340
-        });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo10.png"), {
-            frameWidth: 340,
-            frameHeight: 340
-        });
-        this.load.audio("music", require("../assets/bgm_maoudamashii_ethnic11.mp3"));
-        this.load.audio("se_jump", require("../assets/se_maoudamashii_system10.mp3"));
-        this.load.audio("se_coin", require("../assets/se_maoudamashii_se_sound13.mp3"));
-        this.load.audio("se_destroy", require("../assets/se_maoudamashii_retro12.mp3"));
-        this.load.audio("se_damage", require("../assets/se_maoudamashii_se_sound14.mp3"));
-        */
         this.hogeTime = 0;
     },
     create() {
@@ -144,7 +98,19 @@ export default {
                 loop: true
             });
             var _rand = getRandNumberFromRange(1, 10);
-            //_rand = 8;
+            _rand = 100;
+            if (_rand ==  100) {
+                let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
+                enemy.life = 1;
+                enemy.type = 1;
+                enemy.setScale(0.42);
+                enemy.body.setAllowGravity(false);
+                enemy.anims.play("enemy_run", true);
+                enemy.setSize(120, 120, true);
+                enemy.setOffset(100, 140);
+                //enemy.setVelocityX(Phaser.Math.Between(-200, -500));
+                //enemy.x = this.player.x;
+            }
             if (1 <= _rand && _rand <= 3) {
                 let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
                 enemy.life = 1;
@@ -197,6 +163,7 @@ export default {
 
         function onEventFire() {
             this.timedEvent1.reset({
+                //delay: Phaser.Math.Between(500, 1000),
                 delay: Phaser.Math.Between(500, 1000),
                 callback: onEventFire,
                 callbackScope: this,
