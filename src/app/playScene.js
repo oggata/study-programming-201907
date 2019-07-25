@@ -98,7 +98,7 @@ export default {
                 loop: true
             });
             var _rand = getRandNumberFromRange(1, 10);
-            _rand = 100;
+            //_rand = 100;
             if (_rand ==  100) {
                 let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
                 enemy.life = 1;
