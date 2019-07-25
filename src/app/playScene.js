@@ -6,6 +6,7 @@ export default {
         this.player = "";
         this.isGameOver = false;
         this.enemies = [];
+        this.items = [];
         this.coins = [];
         this.effects = [];
         this.characterScale = 1;
@@ -23,6 +24,12 @@ export default {
         this.backgroundSpeed = 1;
         this.damageTime = 0;
         this.bones = [];
+        this.itemTime = 0;
+
+
+        this.invincibleTime = 0;
+
+        /*
         this.load.image("background1", require("../assets/background/back1.png"));
         this.load.image("background2", require("../assets/background/back2.png"));
         this.load.image("background3", require("../assets/background/back3.png"));
@@ -55,7 +62,7 @@ export default {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo9.png"), {
+        this.load.spritesheet("doux", require("../assets/sprites/kyo10.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
@@ -64,6 +71,7 @@ export default {
         this.load.audio("se_coin", require("../assets/se_maoudamashii_se_sound13.mp3"));
         this.load.audio("se_destroy", require("../assets/se_maoudamashii_retro12.mp3"));
         this.load.audio("se_damage", require("../assets/se_maoudamashii_se_sound14.mp3"));
+        */
         this.hogeTime = 0;
     },
     create() {
@@ -99,6 +107,7 @@ export default {
         this.enemies = this.physics.add.group();
         this.effects = this.physics.add.group();
         this.coins = this.physics.add.group();
+        this.items = this.physics.add.group();
         this.fires = this.physics.add.group();
         this.enemyFires = this.physics.add.group();
         this.bones = this.physics.add.group();
@@ -122,6 +131,11 @@ export default {
             loop: true
         });
 
+        function getRandNumberFromRange(min, max) {
+            var rand = min + Math.floor(Math.random() * (max - min));
+            return rand;
+        };
+
         function onEventEnemy() {
             this.timedEvent2.reset({
                 delay: Phaser.Math.Between(1200, 1700),
@@ -129,13 +143,56 @@ export default {
                 callbackScope: this,
                 loop: true
             });
-            let enemy = this.enemies.create(1000, Phaser.Math.Between(120, 500), "enemy");
-            enemy.setScale(0.42);
-            enemy.body.setAllowGravity(false);
-            enemy.anims.play("enemy_run", true);
-            enemy.setSize(120, 120, true);
-            enemy.setOffset(100, 140);
-            this.enemies.setVelocityX(Phaser.Math.Between(-200, -500));
+            var _rand = getRandNumberFromRange(1, 10);
+            //_rand = 8;
+            if (1 <= _rand && _rand <= 3) {
+                let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
+                enemy.life = 1;
+                enemy.type = 1;
+                enemy.setScale(0.42);
+                enemy.body.setAllowGravity(false);
+                enemy.anims.play("enemy_run", true);
+                enemy.setSize(120, 120, true);
+                enemy.setOffset(100, 140);
+                enemy.setVelocityX(Phaser.Math.Between(-200, -500));
+            }
+            if (4 <= _rand && _rand <= 5) {
+                let enemy = this.enemies.create(800, 350, "enemy2");
+                enemy.life = 1;
+                enemy.type = 2;
+                enemy.setScale(0.8);
+                //enemy.body.setAllowGravity(false);
+                enemy.anims.play("enemy2_run", true);
+                enemy.setSize(120, 120, true);
+                enemy.setOffset(100, 140);
+                enemy.setVelocityX(Phaser.Math.Between(-400, -500));
+                //this.enemies.setVelocityX(-20);
+            }
+            if (6 <= _rand && _rand <= 7) {
+                let enemy = this.enemies.create(800, 350, "enemy3");
+                enemy.life = 1;
+                enemy.type = 3;
+                enemy.setScale(0.4);
+                enemy.getBounds();
+                enemy.setBounce(1);
+                //enemy.setCollideWorldBounds(true);
+                enemy.anims.play("enemy3_run", true);
+                enemy.setSize(120, 120, true);
+                enemy.setOffset(100, 140);
+                enemy.setVelocityX(Phaser.Math.Between(-200, -200));
+            }
+            if (8 <= _rand && _rand <= 8) {
+                let enemy = this.enemies.create(800, 300, "enemybig1");
+                enemy.damageTime = 0;
+                enemy.life = 3;
+                enemy.type = 4;
+                enemy.setScale(0.8);
+                enemy.body.setAllowGravity(false);
+                enemy.anims.play("enemybig1_run", true);
+                enemy.setSize(120, 120, true);
+                enemy.setOffset(100, 140);
+                enemy.setVelocityX(-30);
+            }
         }
 
         function onEventFire() {
@@ -164,8 +221,8 @@ export default {
                 loop: true
             });
             for (var i = 0; i < this.enemies.children.entries.length; i++) {
-                //console.log(this.enemies.children.entries[i].y);
-                if (this.enemies.children.entries[i].x >= 0) {
+                console.log(this.enemies.children.entries[i].type);
+                if (this.enemies.children.entries[i].x >= 0 && this.enemies.children.entries[i].type == 1) {
                     let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x, this.enemies.children.entries[i].y, "enemy_fire");
                     //enemyFire.setScale(0.8);
                     enemyFire.setCircle(5);
@@ -180,7 +237,7 @@ export default {
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
                 start: 0,
-                end: 5
+                end: 2
             }),
             frameRate: 14,
             repeat: -1
@@ -188,8 +245,8 @@ export default {
         this.anims.create({
             key: "death",
             frames: this.anims.generateFrameNumbers("doux", {
-                start: 6,
-                end: 6
+                start: 3,
+                end: 3
             }),
             frameRate: 10,
             repeat: -1
@@ -198,7 +255,43 @@ export default {
             key: "enemy_run",
             frames: this.anims.generateFrameNumbers("enemy", {
                 start: 0,
-                end: 6
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy1_run",
+            frames: this.anims.generateFrameNumbers("enemy1", {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy2_run",
+            frames: this.anims.generateFrameNumbers("enemy2", {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy3_run",
+            frames: this.anims.generateFrameNumbers("enemy3", {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemybig1_run",
+            frames: this.anims.generateFrameNumbers("enemybig1", {
+                start: 0,
+                end: 2
             }),
             frameRate: 10,
             repeat: -1
@@ -239,6 +332,17 @@ export default {
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "item",
+            frames: this.anims.generateFrameNumbers("item", {
+                start: 0,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
         this.anims.create({
             key: "damaged-effect",
             frames: this.anims.generateFrameNumbers("damaged-effect", {
@@ -257,32 +361,50 @@ export default {
             this.scoreText.setText("SCORE: " + this.score);
         }
 
+        function hitPlayerToItem(player,item){
+            let coinSE = this.sound.add("se_coin");
+            coinSE.play();
+            item.destroy();
+
+            this.invincibleTime = 30 * 5;
+            //this.score += 5;
+            //this.scoreText.setText("SCORE: " + this.score);
+        }
+
         function damageEnemyByPlayer(enemy, fire) {
-            let destroySE = this.sound.add("se_destroy");
-            destroySE.play();
-            for (var i = 0; i < 3; i++) {
-                let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
-                coin.setScale(0.2);
-                coin.setCircle(5);
-                coin.anims.play("coin", true);
-                coin.setSize(70, 70, 0, 0);
-                coin.setVelocityX(-200);
-                coin.getBounds();
-                //var bounceRate = Phaser.Math.Between(1, 10) / 10
-                coin.setBounce(1);
-                //coin.setCollideWorldBounds(true);
-            }
-            let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
-            damagedEffect.body.setAllowGravity(false);
-            damagedEffect.anims.play("damaged-effect", true);
-            damagedEffect.setScale(2);
-            enemy.destroy();
+            //console.log(enemy.x);
+            if (enemy.x >= 750) return;
             fire.destroy();
+            enemy.life -= 1;
+            enemy.damageTime = 15;
+            if (enemy.life <= 0) {
+                let destroySE = this.sound.add("se_destroy");
+                destroySE.play();
+                for (var i = 0; i < 3; i++) {
+                    let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
+                    coin.setScale(0.2);
+                    coin.setCircle(5);
+                    coin.anims.play("coin", true);
+                    coin.setSize(70, 70, 0, 0);
+                    coin.setVelocityX(-200);
+                    coin.getBounds();
+                    //var bounceRate = Phaser.Math.Between(1, 10) / 10
+                    coin.setBounce(1);
+                    //coin.setCollideWorldBounds(true);
+                }
+                let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
+                damagedEffect.body.setAllowGravity(false);
+                damagedEffect.anims.play("damaged-effect", true);
+                damagedEffect.setScale(2);
+                enemy.destroy();
+            }
         }
 
         function damagePlayerByFire(player, enemyFire) {
+            if(this.invincibleTime>=1) return;
+
             if (this.damageTime == 0) {
-                this.damageTime = 60;
+                this.damageTime = 15;
                 this.scoreLifeAmount -= 1;
             }
             let destroySE = this.sound.add("se_damage");
@@ -324,8 +446,11 @@ export default {
         }
 
         function damagePlayerByEnemy(player, enemy) {
+
+            if(this.invincibleTime>=1) return;
+
             if (this.damageTime == 0) {
-                this.damageTime = 60;
+                this.damageTime = 15;
                 this.scoreLifeAmount -= 1;
             }
             let destroySE = this.sound.add("se_damage");
@@ -382,10 +507,13 @@ export default {
         this.physics.add.collider(this.bones, this.ground);
         this.physics.add.collider(this.bones, this.bones);
         //オブジェクトが重なった時に発動する
-        this.physics.add.overlap(this.enemies, this.fires, damageEnemyByPlayer, null, this);
         this.physics.add.overlap(this.player, this.enemies, damagePlayerByEnemy, null, this);
         this.physics.add.overlap(this.player, this.enemyFires, damagePlayerByFire, null, this);
+        this.physics.add.overlap(this.enemies, this.fires, damageEnemyByPlayer, null, this);
         this.physics.add.overlap(this.player, this.coins, hitPlayerToCoin, null, this);
+
+        this.physics.add.overlap(this.player, this.items, hitPlayerToItem, null, this);
+
         this.scoreText = this.add.text(16, 16, "SCORE: 0", {
             fontSize: "32px",
             fill: "#FFFFFF"
@@ -398,11 +526,33 @@ export default {
         this.cameras.main.setBounds(0, 0, 800, 600);
     },
     update() {
+
+        if(this.invincibleTime>=1){
+            this.player.setScale(2);
+            this.backgroundSpeed = 5;
+        }else{
+            this.player.setScale(0.7);
+            this.backgroundSpeed = 1;
+        }
+
         //console.log(this.effects.children.entries);
         for (var i = 0; i < this.effects.children.entries.length; i++) {
             this.effects.children.entries[i].alpha -= 0.01;
             if (this.effects.children.entries[i].alpha <= 0) {
                 this.effects.children.entries[i].destroy();
+            }
+        }
+        for (var j = 0; j < this.enemies.children.entries.length; j++) {
+            this.enemies.children.entries[j].damageTime -= 1;
+            if (this.enemies.children.entries[j].damageTime <= 0) {
+                this.enemies.children.entries[j].damageTime = 0;
+            }
+            if (this.enemies.children.entries[j].damageTime >= 1) {
+                //this.enemies.children.entries[j].alpha = 0.2;
+                this.enemies.children.entries[j].setTint(0xff0000);
+            } else {
+                //this.enemies.children.entries[j].alpha = 1;
+                this.enemies.children.entries[j].setTint(0xffffff);
             }
         }
         //console.log(this.damageTime);
@@ -411,13 +561,36 @@ export default {
             this.damageTime = 0;
         }
         if (this.damageTime > 0) {
-            this.player.alpha = 0.2;
+            //this.player.alpha = 0.2;
+            this.player.setTint(0xff0000);
         } else {
-            this.player.alpha = 1;
+            //this.player.alpha = 1;
+            this.player.setTint(0xffffff);
         }
+
+
+        this.invincibleTime-=1;
+        if(this.invincibleTime<=1){
+            this.invincibleTime = 0;
+        }
+
+
         this.playerJumpCnt += 1;
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
+            this.itemTime += 1;
+
+            if(this.itemTime>=30*15){
+                this.itemTime = 0;
+                let item = this.items.create(800,120, "item");
+                item.setScale(0.4);
+                //item.setCircle(5);
+                item.body.setAllowGravity(false);
+                item.anims.play("item", true);
+                item.setSize(120, 120, 0, 0);
+                item.setVelocityX(-200);
+            }
+
             this.gameTime += 1;
             //ゲームスタート直後は反応しない
             if (this.gameTime >= 50) {

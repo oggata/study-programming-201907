@@ -20,6 +20,12 @@ export default {
         this.load.audio("se_coin", require("../assets/se_maoudamashii_se_sound13.mp3"));
         this.load.audio("se_destroy", require("../assets/se_maoudamashii_retro12.mp3"));
         this.load.audio("se_damage", require("../assets/se_maoudamashii_se_sound14.mp3"));
+
+        this.load.spritesheet("item", require("../assets/sprites/pipo-gwspinitem009.png"), {
+            frameWidth: 192,
+            frameHeight: 192
+        });
+
         this.load.spritesheet("coin", require("../assets/sprites/pipo-gwspinitem002.png"), {
             frameWidth: 192,
             frameHeight: 192
@@ -36,11 +42,32 @@ export default {
             frameWidth: 120,
             frameHeight: 120
         });
-        this.load.spritesheet("enemy", require("../assets/sprites/enemy.png"), {
+        this.load.spritesheet("enemy", require("../assets/sprites/kyo11.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("doux", require("../assets/sprites/kyo9.png"), {
+
+
+        this.load.spritesheet("enemy1", require("../assets/sprites/kyo11.png"), {
+            frameWidth: 340,
+            frameHeight: 340
+        });
+        this.load.spritesheet("enemy2", require("../assets/sprites/kyo12.png"), {
+            frameWidth: 340,
+            frameHeight: 340
+        });
+        this.load.spritesheet("enemy3", require("../assets/sprites/kyo13.png"), {
+            frameWidth: 340,
+            frameHeight: 340
+        });
+
+        this.load.spritesheet("enemybig1", require("../assets/sprites/kyo20.png"), {
+            frameWidth: 680,
+            frameHeight: 680
+        });
+
+
+        this.load.spritesheet("doux", require("../assets/sprites/kyo10.png"), {
             frameWidth: 340,
             frameHeight: 340
         });

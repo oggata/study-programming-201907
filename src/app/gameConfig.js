@@ -53,7 +53,7 @@ scale: {
       gravity: {
         y: 980
       },
-      debug:false
+      debug:true
     }
   },
   scene: [bootScene, menuScene, playScene, endScene]
