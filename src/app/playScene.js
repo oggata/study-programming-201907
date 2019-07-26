@@ -27,11 +27,13 @@ export default {
         this.itemTime = 0;
         this.invincibleTime = 0;
         this.hogeTime = 0;
+
+        this.bgm = null;
     },
     create() {
-        let music = this.sound.add('music')
-        music.setLoop(true)
-        music.play();
+        this.bgm = this.sound.add('music')
+        this.bgm.setLoop(true)
+        this.bgm.play();
         //this.background5 = this.add.tileSprite(400, 300, 1000, 600, "background5");
         this.background5 = this.add.tileSprite(400, 300, 667, 250, "background5");
         this.background4 = this.add.tileSprite(400, 300, 667, 250, "background4");
@@ -164,7 +166,7 @@ export default {
         function onEventFire() {
             this.timedEvent1.reset({
                 //delay: Phaser.Math.Between(500, 1000),
-                delay: Phaser.Math.Between(500, 1000),
+                delay: Phaser.Math.Between(1000, 1200),
                 callback: onEventFire,
                 callbackScope: this,
                 loop: true
@@ -336,6 +338,13 @@ export default {
             this.invincibleTime = 30 * 5;
             //this.score += 5;
             //this.scoreText.setText("SCORE: " + this.score);
+
+        this.bgm.stop();
+        this.bgm = this.sound.add('music2')
+        this.bgm.setLoop(true)
+        this.bgm.play();
+
+
         }
 
         function damageEnemyByPlayer(enemy, fire) {
@@ -378,7 +387,10 @@ export default {
             destroySE.play();
             enemyFire.destroy();
             if (this.scoreLifeAmount <= 0) {
-                music.stop();
+        this.bgm.stop();
+        this.bgm = this.sound.add('music_end')
+        this.bgm.setLoop(true)
+        this.bgm.play();
                 this.isGameOver = true;
                 this.timedEvent1.paused = true;
                 this.timedEvent2.paused = true;
@@ -389,6 +401,9 @@ export default {
                 let restart = this.add.image(400, 300, "gameover");
                 restart.setInteractive();
                 restart.on("pointerdown", () => {
+
+                    this.bgm.stop();
+
                     this.scene.start("play");
                     this.isGameOver = false;
                     this.score = 0;
@@ -424,7 +439,14 @@ export default {
             destroySE.play();
             enemy.destroy();
             if (this.scoreLifeAmount <= 0) {
-                music.stop();
+                //music.stop();
+
+        this.bgm.stop();
+        this.bgm = this.sound.add('music_end')
+        this.bgm.setLoop(true)
+        this.bgm.play();
+
+
                 this.isGameOver = true;
                 this.timedEvent1.paused = true;
                 this.timedEvent2.paused = true;
@@ -444,6 +466,9 @@ export default {
                 let restart = this.add.image(400, 300, "gameover");
                 restart.setInteractive();
                 restart.on("pointerdown", () => {
+
+                    this.bgm.stop();
+
                     this.scene.start("play");
                     this.isGameOver = false;
                     this.score = 0;
@@ -537,6 +562,17 @@ export default {
 
 
         this.invincibleTime-=1;
+
+
+        if(this.invincibleTime == 1){
+            this.bgm.stop();
+            this.bgm = this.sound.add('music')
+            this.bgm.setLoop(true)
+            this.bgm.play();
+
+        }
+
+
         if(this.invincibleTime<=1){
             this.invincibleTime = 0;
         }

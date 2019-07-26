@@ -16,6 +16,9 @@ export default {
         this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
         this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
         this.load.audio("music", require("../assets/bgm_maoudamashii_ethnic11.mp3"));
+        this.load.audio("music2", require("../assets/bgm_maoudamashii_neorock72.mp3"));
+        this.load.audio("music_end", require("../assets/bgm_maoudamashii_acoustic49.mp3"));
+        //bgm_maoudamashii_ethnic11
         this.load.audio("se_jump", require("../assets/se_maoudamashii_system10.mp3"));
         this.load.audio("se_coin", require("../assets/se_maoudamashii_se_sound13.mp3"));
         this.load.audio("se_destroy", require("../assets/se_maoudamashii_retro12.mp3"));
