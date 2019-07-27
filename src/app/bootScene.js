@@ -15,18 +15,24 @@ export default {
         this.load.image("bone3", require("../assets/sprites/bone/bone3.png"));
         this.load.image("bone4", require("../assets/sprites/bone/bone4.png"));
         this.load.image("bone5", require("../assets/sprites/bone/bone5.png"));
-        this.load.audio("music", require("../assets/bgm_maoudamashii_ethnic11.mp3"));
-        this.load.audio("music2", require("../assets/bgm_maoudamashii_neorock72.mp3"));
-        this.load.audio("music_end", require("../assets/bgm_maoudamashii_acoustic49.mp3"));
+
+        this.load.audio("music", require("../assets/music/bgm_maoudamashii_ethnic11.mp3"));
+        this.load.audio("music2", require("../assets/music/bgm_maoudamashii_neorock72.mp3"));
+        this.load.audio("music_end", require("../assets/music/bgm_maoudamashii_acoustic49.mp3"));
         //bgm_maoudamashii_ethnic11
-        this.load.audio("se_jump", require("../assets/se_maoudamashii_system10.mp3"));
-        this.load.audio("se_coin", require("../assets/se_maoudamashii_se_sound13.mp3"));
-        this.load.audio("se_destroy", require("../assets/se_maoudamashii_retro12.mp3"));
-        this.load.audio("se_damage", require("../assets/se_maoudamashii_se_sound14.mp3"));
+        this.load.audio("se_jump", require("../assets/music/se_maoudamashii_system10.mp3"));
+        this.load.audio("se_coin", require("../assets/music/se_maoudamashii_se_sound13.mp3"));
+        this.load.audio("se_destroy", require("../assets/music/se_maoudamashii_retro12.mp3"));
+        this.load.audio("se_damage", require("../assets/music/se_maoudamashii_se_sound14.mp3"));
 
         this.load.spritesheet("item", require("../assets/sprites/pipo-gwspinitem009.png"), {
             frameWidth: 192,
             frameHeight: 192
+        });
+
+        this.load.spritesheet("meat", require("../assets/sprites/meat.png"), {
+            frameWidth: 240,
+            frameHeight: 240
         });
 
         this.load.spritesheet("coin", require("../assets/sprites/pipo-gwspinitem002.png"), {
@@ -45,32 +51,32 @@ export default {
             frameWidth: 120,
             frameHeight: 120
         });
-        this.load.spritesheet("enemy", require("../assets/sprites/kyo11.png"), {
+        this.load.spritesheet("enemy", require("../assets/sprites/dinosaur/enemy1.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
 
 
-        this.load.spritesheet("enemy1", require("../assets/sprites/kyo11.png"), {
+        this.load.spritesheet("enemy1", require("../assets/sprites/dinosaur/enemy1.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("enemy2", require("../assets/sprites/kyo12.png"), {
+        this.load.spritesheet("enemy2", require("../assets/sprites/dinosaur/enemy2.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
-        this.load.spritesheet("enemy3", require("../assets/sprites/kyo13.png"), {
+        this.load.spritesheet("enemy3", require("../assets/sprites/dinosaur/enemy3.png"), {
             frameWidth: 340,
             frameHeight: 340
         });
 
-        this.load.spritesheet("enemybig1", require("../assets/sprites/kyo20.png"), {
+        this.load.spritesheet("enemybig1", require("../assets/sprites/dinosaur/enemy4.png"), {
             frameWidth: 680,
             frameHeight: 680
         });
 
 
-        this.load.spritesheet("doux", require("../assets/sprites/kyo10.png"), {
+        this.load.spritesheet("doux", require("../assets/sprites/dinosaur/player.png"), {
             frameWidth: 340,
             frameHeight: 340
         });

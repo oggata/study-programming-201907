@@ -4,30 +4,6 @@ import playScene from "./playScene";
 import menuScene from "./menuScene";
 import endScene from "./endScene";
 
-/*
-let config = {
-  type: Phaser.WEBGL,
-  width: 800,
-  height: 600,
-  parent: 'canvas',
-  pixelArt: true,
-  physics: {
-    default: 'arcade',
-    arcade: {
-      gravity: {
-        y: 1000
-      },
-      debug: false
-    }
-  },
-  scene: [
-    TitleScene,
-    GameScene
-  ]
-}
-
-*/
-
 export default {
   type: Phaser.AUTO,
 scale: {
@@ -41,8 +17,8 @@ scale: {
   //height: 600,
   //parent: "canvas",
   pixelArt: true,
-  title: "Phaser 3 with Parcel 📦",
-  url: "https://github.com/samme/phaser-parcel",
+  title: "study-programming-201907",
+  url: "https://github.com/oggata/study-programming-201907",
   banner: {
     text: "white",
     background: ["#FD7400", "#FFE11A", "#BEDB39", "#1F8A70", "#004358"]
@@ -53,7 +29,7 @@ scale: {
       gravity: {
         y: 980
       },
-      debug:true
+      debug:false
     }
   },
   scene: [bootScene, menuScene, playScene, endScene]
