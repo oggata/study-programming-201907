@@ -236,8 +236,6 @@ export default {
                 enemy.anims.play("enemy_run", true);
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
-                //enemy.setVelocityX(Phaser.Math.Between(-200, -500));
-                //enemy.x = this.player.x;
             }
             if (1 <= _rand && _rand <= 3) {
                 let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
@@ -255,12 +253,10 @@ export default {
                 enemy.life = 1;
                 enemy.type = 2;
                 enemy.setScale(0.8);
-                //enemy.body.setAllowGravity(false);
                 enemy.anims.play("enemy2_run", true);
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
                 enemy.setVelocityX(Phaser.Math.Between(-400, -500));
-                //this.enemies.setVelocityX(-20);
             }
             if (6 <= _rand && _rand <= 7) {
                 let enemy = this.enemies.create(800, 350, "enemy3");
@@ -269,7 +265,6 @@ export default {
                 enemy.setScale(0.4);
                 enemy.getBounds();
                 enemy.setBounce(1);
-                //enemy.setCollideWorldBounds(true);
                 enemy.anims.play("enemy3_run", true);
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
@@ -277,7 +272,6 @@ export default {
             }
             this.bossCount = 0;
             for (var i = 0; i < this.enemies.children.entries.length; i++) {
-                //console.log(this.enemies.children.entries[i].type);
                 if (this.enemies.children.entries[i].type == 4) {
                     this.bossCount++;
                 }
@@ -298,7 +292,6 @@ export default {
 
         function onEventFire() {
             this.timedEvent1.reset({
-                //delay: Phaser.Math.Between(500, 1000),
                 delay: Phaser.Math.Between(1000, 1200),
                 callback: onEventFire,
                 callbackScope: this,
@@ -306,10 +299,8 @@ export default {
             });
             let fire = this.fires.create(this.player.x + 80, this.player.y + 20, "fire");
             fire.setScale(1);
-            //fire.setCircle(5);
             fire.anims.play("fire", true);
             fire.setSize(40, 40, 0, 0);
-            //fire.setBounceY(1.2);
             fire.setOffset(50, 50);
             this.fires.setVelocityX(800);
             this.fires.setVelocityY(-500);
@@ -367,9 +358,7 @@ export default {
                     coin.setSize(70, 70, 0, 0);
                     coin.setVelocityX(-200);
                     coin.getBounds();
-                    //var bounceRate = Phaser.Math.Between(1, 10) / 10
                     coin.setBounce(1);
-                    //coin.setCollideWorldBounds(true);
                 }
                 let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
                 damagedEffect.body.setAllowGravity(false);
@@ -384,30 +373,6 @@ export default {
             fire.destroy();
             enemy.life -= 1;
             enemy.damageTime = 15;
-            //this.setEnemyEffect(enemy);
-            /*
-            if (enemy.life <= 0) {
-                let destroySE = this.sound.add("se_destroy");
-                destroySE.play();
-                for (var i = 0; i < 3; i++) {
-                    let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
-                    coin.setScale(0.2);
-                    coin.setCircle(5);
-                    coin.anims.play("coin", true);
-                    coin.setSize(70, 70, 0, 0);
-                    coin.setVelocityX(-200);
-                    coin.getBounds();
-                    //var bounceRate = Phaser.Math.Between(1, 10) / 10
-                    coin.setBounce(1);
-                    //coin.setCollideWorldBounds(true);
-                }
-                let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
-                damagedEffect.body.setAllowGravity(false);
-                damagedEffect.anims.play("damaged-effect", true);
-                damagedEffect.setScale(2);
-                enemy.destroy();
-            }
-            */
         }
         this.deadPlayer = function () {
             this.bgm.stop();
@@ -542,24 +507,19 @@ export default {
                 this.enemies.children.entries[j].damageTime = 0;
             }
             if (this.enemies.children.entries[j].damageTime >= 1) {
-                //this.enemies.children.entries[j].alpha = 0.2;
                 this.enemies.children.entries[j].setTint(0xff0000);
             } else {
-                //this.enemies.children.entries[j].alpha = 1;
                 this.enemies.children.entries[j].setTint(0xffffff);
             }
             this.setEnemyEffect(this.enemies.children.entries[j]);
         }
-        //console.log(this.damageTime);
         this.damageTime -= 1;
         if (this.damageTime <= 0) {
             this.damageTime = 0;
         }
         if (this.damageTime > 0) {
-            //this.player.alpha = 0.2;
             this.player.setTint(0xff0000);
         } else {
-            //this.player.alpha = 1;
             this.player.setTint(0xffffff);
         }
         this.invincibleTime -= 1;
