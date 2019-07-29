@@ -9,6 +9,7 @@ export default {
         this.items = [];
         this.coins = [];
         this.effects = [];
+        this.enemyDefences = [];
         this.characterScale = 1;
         this.isPointerDown = false;
         this.touchingTime = 0;
@@ -24,13 +25,14 @@ export default {
         this.backgroundSpeed = 1;
         this.damageTime = 0;
         this.bones = [];
-        this.itemTime = 0;
+        
         this.invincibleTime = 0;
         this.bgm = null;
         this.bossCount = 0;
         /****************************************************************/
         this.itemMaxTime = 999999999;
-        //this.itemMaxTime = 60*10;
+        this.itemTime = 60*14;
+        //this.itemMaxTime = 60*17;
         /****************************************************************/
     },
     create() {
@@ -67,6 +69,7 @@ export default {
         this.player.setSize(100, 180, true);
         this.player.setOffset(130, 140);
         this.enemies = this.physics.add.group();
+        this.enemyDefences = this.physics.add.group();
         this.effects = this.physics.add.group();
         this.coins = this.physics.add.group();
         this.items = this.physics.add.group();
@@ -98,7 +101,8 @@ export default {
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
                 start: 0,
-                end: 2
+                end: 0
+                //end: 2
             }),
             frameRate: 14,
             repeat: -1
@@ -118,8 +122,9 @@ export default {
             });
             /****************************************************************/
             var _rand = getRandNumberFromRange(1, 10);
-            _rand = 999;
+            _rand = 99;
             /****************************************************************/
+            /*
             if (_rand == 100) {
                 let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
                 enemy.life = 1;
@@ -130,8 +135,15 @@ export default {
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
             }
+            */
+            this.bossCount = 0;
+            for (var i = 0; i < this.enemies.children.entries.length; i++) {
+                if (this.enemies.children.entries[i].type == 4) {
+                    this.bossCount++;
+                }
+            }
             //飛行
-            if (1 <= _rand && _rand <= 3) {
+            if (1 <= _rand && _rand <= 3 && this.bossCount == 0) {
                 let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
                 enemy.life = 3;
                 enemy.type = 1;
@@ -143,7 +155,7 @@ export default {
                 enemy.setVelocityX(Phaser.Math.Between(-200, -500));
             }
             //突進
-            if (4 <= _rand && _rand <= 5) {
+            if (4 <= _rand && _rand <= 5 && this.bossCount == 0) {
                 let enemy = this.enemies.create(800, 350, "enemy2");
                 enemy.life = 4;
                 enemy.type = 2;
@@ -154,7 +166,7 @@ export default {
                 enemy.setVelocityX(Phaser.Math.Between(-400, -500));
             }
             //ジャンプ
-            if (6 <= _rand && _rand <= 7) {
+            if (6 <= _rand && _rand <= 7 && this.bossCount == 0) {
                 let enemy = this.enemies.create(800, 350, "enemy3");
                 enemy.life = 3;
                 enemy.type = 3;
@@ -166,15 +178,12 @@ export default {
                 enemy.setOffset(100, 140);
                 enemy.setVelocityX(Phaser.Math.Between(-200, -200));
             }
-            this.bossCount = 0;
-            for (var i = 0; i < this.enemies.children.entries.length; i++) {
-                if (this.enemies.children.entries[i].type == 4) {
-                    this.bossCount++;
-                }
-            }
+
             //ボス
+            //if (8 <= _rand && _rand <= 8 && this.bossCount == 0 && this.score >= 50) {
             if (8 <= _rand && _rand <= 8 && this.bossCount == 0) {
                 let enemy = this.enemies.create(800, 300, "enemybig1");
+                enemy.enemyId = getRandNumberFromRange(1, 999999);
                 enemy.damageTime = 0;
                 enemy.life = 10;
                 enemy.type = 4;
@@ -184,6 +193,17 @@ export default {
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
                 enemy.setVelocityX(-30);
+                /*
+                let enemyDefence = this.enemyDefences.create(0, 400, "enemybig1");
+                enemyDefence.enemyId = enemy.enemyId;
+                enemyDefence.setSize(200, 300, true);
+                //enemyDefence.setOffset(100, 140);
+                enemyDefence.body.setAllowGravity(false);
+                enemyDefence.setAlpha(0);
+                this.physics.add.existing(enemyDefence);
+                enemyDefence.body.immovable = true;
+                enemyDefence.body.moves = true;
+                */
             }
         }
 
@@ -201,17 +221,17 @@ export default {
             fire.anims.play("fire", true);
             fire.setSize(40, 40, 0, 0);
             fire.setOffset(50, 50);
-
-                fire.setScale(0.6);
-                fire.getBounds();
-                fire.setBounce(0.8);
-                //fire.body.setAllowGravity(false);
-
+            fire.setScale(0.6);
+            fire.getBounds();
+            fire.setBounce(1);
             fire.setVelocityX(300);
             fire.setVelocityY(-300);
         }
 
         function onEventEnemyFire() {
+            /****************************************************************/
+            return true;
+            /****************************************************************/
             this.timedEvent3.reset({
                 delay: Phaser.Math.Between(300, 1001),
                 callback: onEventEnemyFire,
@@ -227,6 +247,24 @@ export default {
                     enemyFire.setSize(30, 30, 0, 0);
                     this.enemyFires.setVelocityX(-200);
                     enemyFire.setOffset(50, 50);
+                }
+                //ボスの動作
+                if (this.enemies.children.entries[i].x >= 0 && this.enemies.children.entries[i].type == 4) {
+                    var _rand = getRandNumberFromRange(0, 3);
+                    if (_rand == 1) {
+                        let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x - 200, this.enemies.children.entries[i].y - 170, "enemy_fire");
+                        enemyFire.anims.play("enemy_fire", true);
+                        enemyFire.setSize(30, 30, 0, 0);
+                        enemyFire.setVelocityX(Phaser.Math.Between(-500, -100));
+                        enemyFire.setVelocityY(Phaser.Math.Between(-500, -100));
+                        enemyFire.setOffset(50, 50);
+                        if (this.enemies.children.entries[i].x <= 450) {
+                            this.enemies.children.entries[i].setVelocityX(30);
+                        }
+                        if (this.enemies.children.entries[i].x >= 570) {
+                            this.enemies.children.entries[i].setVelocityX(-30);
+                        }
+                    }
                 }
             }
         }
@@ -256,26 +294,28 @@ export default {
                 let destroySE = this.sound.add("se_destroy");
                 destroySE.play();
                 /****************************************************************/
-                                
-                                for (var i = 0; i < 3; i++) {
-                                    let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
-                                    coin.setScale(0.2);
-                                    coin.setCircle(5);
-                                    coin.anims.play("coin", true);
-                                    coin.setSize(70, 70, 0, 0);
-                                    coin.setVelocityX(-200);
-                                    coin.getBounds();
-                                    coin.setBounce(1);
-                                }
-                                
-                                
-                                let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
-                                damagedEffect.body.setAllowGravity(false);
-                                damagedEffect.anims.play("damaged-effect", true);
-                                damagedEffect.setScale(2);
-                                
-                
+                /*
+                for (var i = 0; i < 3; i++) {
+                    let coin = this.coins.create(enemy.x + Phaser.Math.Between(0, 100) - 50, enemy.y + Phaser.Math.Between(0, 100) - 50, "coin");
+                    coin.setScale(0.2);
+                    coin.setCircle(5);
+                    coin.anims.play("coin", true);
+                    coin.setSize(70, 70, 0, 0);
+                    coin.setVelocityX(-200);
+                    coin.getBounds();
+                    coin.setBounce(1);
+                }
+                let damagedEffect = this.effects.create(enemy.x, enemy.y, "damaged-effect");
+                damagedEffect.body.setAllowGravity(false);
+                damagedEffect.anims.play("damaged-effect", true);
+                damagedEffect.setScale(2);
+                */
                 /****************************************************************/
+                for (var j = 0; j < this.enemyDefences.children.entries.length; j++) {
+                    if (this.enemyDefences.children.entries[j].enemyId == enemy.enemyId) {
+                        this.enemyDefences.children.entries[j].destroy();
+                    }
+                }
                 enemy.destroy();
             }
         }
@@ -386,12 +426,16 @@ export default {
         this.physics.add.collider(this.items, this.ground);
         this.physics.add.collider(this.bones, this.ground);
         this.physics.add.collider(this.bones, this.bones);
+        this.physics.add.collider(this.fires, this.enemyDefences);
+        //this.physics.add.collider(this.enemyDefences, this.fires);
         //オブジェクトが重なった時に発動する
+        /*
         this.physics.add.overlap(this.player, this.enemies, damagePlayerByEnemy, null, this);
         this.physics.add.overlap(this.player, this.enemyFires, damagePlayerByFire, null, this);
         this.physics.add.overlap(this.enemies, this.fires, damageEnemyByPlayer, null, this);
         this.physics.add.overlap(this.player, this.coins, hitPlayerToCoin, null, this);
         this.physics.add.overlap(this.player, this.items, hitPlayerToItem, null, this);
+        */
         this.scoreText = this.add.text(16, 16, "SCORE: 0", {
             fontSize: "32px",
             fill: "#FFFFFF"
@@ -407,12 +451,19 @@ export default {
         if (this.invincibleTime >= 1) {
             this.player.setScale(2);
             this.backgroundSpeed = 5;
-        } else if(this.isGameOver ==  true){
+        } else if (this.isGameOver == true) {
             this.player.setScale(0.7);
             this.backgroundSpeed = 0;
         } else {
             this.player.setScale(0.7);
             this.backgroundSpeed = 1;
+        }
+        for (var i = 0; i < this.enemies.children.entries.length; i++) {
+            for (var j = 0; j < this.enemyDefences.children.entries.length; j++) {
+                if (this.enemyDefences.children.entries[j].enemyId == this.enemies.children.entries[i].enemyId) {
+                    this.enemyDefences.children.entries[j].x = this.enemies.children.entries[i].x;
+                }
+            }
         }
         //console.log(this.effects.children.entries);
         for (var i = 0; i < this.effects.children.entries.length; i++) {
@@ -456,7 +507,7 @@ export default {
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
             this.itemTime += 1;
-            if (this.itemTime % this.itemMaxTime == 0) {
+            if (this.itemTime % this.itemMaxTime == 0 && this.bossCount == 0) {
                 this.itemTime = 0;
                 let item = this.items.create(800, 120, "meat");
                 item.setScale(0.35);

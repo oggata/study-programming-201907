@@ -43,6 +43,18 @@ export default {
             frameWidth: 120,
             frameHeight: 120
         });
+        this.load.spritesheet("enemy_water", require("../assets/sprites/pipo-btleffect038.png"), {
+            frameWidth: 120,
+            frameHeight: 120
+        });
+        this.load.spritesheet("enemy_elec", require("../assets/sprites/pipo-btleffect027.png"), {
+            frameWidth: 120,
+            frameHeight: 120
+        });
+        this.load.spritesheet("enemy_wind", require("../assets/sprites/pipo-btleffect039.png"), {
+            frameWidth: 120,
+            frameHeight: 120
+        });
         this.load.spritesheet("damaged-effect", require("../assets/sprites/pipo-btleffect003.png"), {
             frameWidth: 120,
             frameHeight: 120
@@ -64,6 +76,10 @@ export default {
             frameHeight: 340
         });
         this.load.spritesheet("enemybig1", require("../assets/sprites/dinosaur/enemy4.png"), {
+            frameWidth: 680,
+            frameHeight: 680
+        });
+        this.load.spritesheet("enemybig1-angry", require("../assets/sprites/dinosaur/enemy4-angry.png"), {
             frameWidth: 680,
             frameHeight: 680
         });
@@ -111,7 +127,7 @@ export default {
                 start: 0,
                 end: 2
             }),
-            frameRate: 10,
+            frameRate: 22,
             repeat: -1
         });
         this.anims.create({
@@ -126,6 +142,15 @@ export default {
         this.anims.create({
             key: "enemybig1_run",
             frames: this.anims.generateFrameNumbers("enemybig1", {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemybig1_angry",
+            frames: this.anims.generateFrameNumbers("enemybig1_angry", {
                 start: 0,
                 end: 2
             }),
@@ -155,6 +180,33 @@ export default {
             frames: this.anims.generateFrameNumbers("enemy_fire", {
                 start: 0,
                 end: 6
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy_water",
+            frames: this.anims.generateFrameNumbers("enemy_water", {
+                start: 0,
+                end: 7
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy_elec",
+            frames: this.anims.generateFrameNumbers("enemy_elec", {
+                start: 0,
+                end: 7
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "enemy_wind",
+            frames: this.anims.generateFrameNumbers("enemy_wind", {
+                start: 0,
+                end: 7
             }),
             frameRate: 10,
             repeat: -1

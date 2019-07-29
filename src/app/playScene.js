@@ -29,6 +29,12 @@ export default {
         this.invincibleTime = 0;
         this.bgm = null;
         this.bossCount = 0;
+        this.bossAppearCount = 0;
+        this.bossTime = 0;
+        this.bossMode = "normal";
+        this.bossFireTime = 0;
+
+
         /****************************************************************/
         //this.itemMaxTime = 999999999;
         this.itemTime = 60*14;
@@ -101,9 +107,10 @@ export default {
             key: "run",
             frames: this.anims.generateFrameNumbers("doux", {
                 start: 0,
+                //end: 0
                 end: 2
             }),
-            frameRate: 14,
+            frameRate: 30,
             repeat: -1
         });
         /****************************************************************/
@@ -120,21 +127,12 @@ export default {
                 loop: true
             });
             /****************************************************************/
-            var _rand = getRandNumberFromRange(1, 10);
-            //_rand = 8;
+            var _rand = getRandNumberFromRange(1, 8);
+            //_rand = 99;
             /****************************************************************/
-            /*
-            if (_rand == 100) {
-                let enemy = this.enemies.create(800, Phaser.Math.Between(100, 250), "enemy");
-                enemy.life = 1;
-                enemy.type = 1;
-                enemy.setScale(0.42);
-                enemy.body.setAllowGravity(false);
-                enemy.anims.play("enemy_run", true);
-                enemy.setSize(120, 120, true);
-                enemy.setOffset(100, 140);
+            if(Math.floor(this.score/50) > this.bossAppearCount && this.invincibleTime == 0){
+                this.addBoss();
             }
-            */
             this.bossCount = 0;
             for (var i = 0; i < this.enemies.children.entries.length; i++) {
                 if (this.enemies.children.entries[i].type == 4) {
@@ -155,19 +153,19 @@ export default {
             }
             //突進
             if (4 <= _rand && _rand <= 5 && this.bossCount == 0) {
-                let enemy = this.enemies.create(800, 350, "enemy2");
-                enemy.life = 4;
+                let enemy = this.enemies.create(800, 450, "enemy2");
+                enemy.life = 5;
                 enemy.type = 2;
                 enemy.setScale(0.8);
                 enemy.anims.play("enemy2_run", true);
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
-                enemy.setVelocityX(Phaser.Math.Between(-400, -500));
+                enemy.setVelocityX(Phaser.Math.Between(-600, -700));
             }
             //ジャンプ
             if (6 <= _rand && _rand <= 7 && this.bossCount == 0) {
                 let enemy = this.enemies.create(800, 350, "enemy3");
-                enemy.life = 3;
+                enemy.life = 6;
                 enemy.type = 3;
                 enemy.setScale(0.4);
                 enemy.getBounds();
@@ -175,38 +173,46 @@ export default {
                 enemy.anims.play("enemy3_run", true);
                 enemy.setSize(120, 120, true);
                 enemy.setOffset(100, 140);
-                enemy.setVelocityX(Phaser.Math.Between(-200, -200));
+                enemy.setVelocityX(Phaser.Math.Between(-100, -100));
             }
-
             //ボス
-            if (8 <= _rand && _rand <= 8 && this.bossCount == 0 && this.score >= 50) {
-                let enemy = this.enemies.create(800, 300, "enemybig1");
-                enemy.enemyId = getRandNumberFromRange(1, 999999);
-                enemy.damageTime = 0;
-                enemy.life = 10;
-                enemy.type = 4;
-                enemy.setScale(0.8);
-                enemy.body.setAllowGravity(false);
-                enemy.anims.play("enemybig1_run", true);
-                enemy.setSize(120, 120, true);
-                enemy.setOffset(100, 140);
-                enemy.setVelocityX(-30);
-                let enemyDefence = this.enemyDefences.create(0, 400, "enemybig1");
-                enemyDefence.enemyId = enemy.enemyId;
-                enemyDefence.setSize(200, 300, true);
-                //enemyDefence.setOffset(100, 140);
-                enemyDefence.body.setAllowGravity(false);
-                enemyDefence.setAlpha(0);
-                this.physics.add.existing(enemyDefence);
-                enemyDefence.body.immovable = true;
-                enemyDefence.body.moves = true;
+            if (99 <= _rand && _rand <= 99 && this.bossCount == 0) {
+                this.addBoss();
             }
+        }
+
+        this.addBoss = function(){
+            this.bossAppearCount+=1;
+            let enemy = this.enemies.create(800, 300, "enemybig1");
+            enemy.enemyId = getRandNumberFromRange(1, 999999);
+            enemy.damageTime = 0;
+            enemy.life = 15;
+            enemy.type = 4;
+            enemy.setScale(0.8);
+            enemy.body.setAllowGravity(false);
+            enemy.anims.play("enemybig1_run", true);
+            enemy.setSize(120, 120, true);
+            enemy.setOffset(100, 140);
+            enemy.setVelocityX(-30);
+
+            let enemyDefence = this.enemyDefences.create(0, 400, "enemybig1");
+            enemyDefence.enemyId = enemy.enemyId;
+            enemyDefence.setSize(200, 300, true);
+            //enemyDefence.setOffset(100, 140);
+            enemyDefence.body.setAllowGravity(false);
+            enemyDefence.setAlpha(0);
+            this.physics.add.existing(enemyDefence);
+            enemyDefence.body.immovable = true;
+            enemyDefence.body.moves = true;
         }
 
         function onEventFire() {
             /****************************************************************/
             //return true;
             /****************************************************************/
+            if(this.invincibleTime > 0){
+                return true;
+            }
             this.timedEvent1.reset({
                 delay: Phaser.Math.Between(200, 300),
                 callback: onEventFire,
@@ -226,38 +232,20 @@ export default {
 
         function onEventEnemyFire() {
             this.timedEvent3.reset({
-                delay: Phaser.Math.Between(300, 1001),
+                delay: Phaser.Math.Between(500, 1200),
                 callback: onEventEnemyFire,
                 callbackScope: this,
                 loop: true
             });
             for (var i = 0; i < this.enemies.children.entries.length; i++) {
-                console.log(this.enemies.children.entries[i].type);
+                //console.log(this.enemies.children.entries[i].type);
                 if (this.enemies.children.entries[i].x >= 0 && this.enemies.children.entries[i].type == 1) {
-                    let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x, this.enemies.children.entries[i].y, "enemy_fire");
+                    let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x, this.enemies.children.entries[i].y, "enemy_elec");
                     enemyFire.setCircle(5);
-                    enemyFire.anims.play("enemy_fire", true);
+                    enemyFire.anims.play("enemy_elec", true);
                     enemyFire.setSize(30, 30, 0, 0);
                     this.enemyFires.setVelocityX(-200);
                     enemyFire.setOffset(50, 50);
-                }
-                //ボスの動作
-                if (this.enemies.children.entries[i].x >= 0 && this.enemies.children.entries[i].type == 4) {
-                    var _rand = getRandNumberFromRange(0, 3);
-                    if (_rand == 1) {
-                        let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x - 200, this.enemies.children.entries[i].y - 170, "enemy_fire");
-                        enemyFire.anims.play("enemy_fire", true);
-                        enemyFire.setSize(30, 30, 0, 0);
-                        enemyFire.setVelocityX(Phaser.Math.Between(-500, -100));
-                        enemyFire.setVelocityY(Phaser.Math.Between(-500, -100));
-                        enemyFire.setOffset(50, 50);
-                        if (this.enemies.children.entries[i].x <= 450) {
-                            this.enemies.children.entries[i].setVelocityX(30);
-                        }
-                        if (this.enemies.children.entries[i].x >= 570) {
-                            this.enemies.children.entries[i].setVelocityX(-30);
-                        }
-                    }
                 }
             }
         }
@@ -277,6 +265,9 @@ export default {
             coinSE.play();
             item.destroy();
             this.invincibleTime = 30 * 10;
+
+            this.player.y = 50;
+
             this.bgm.stop();
             this.bgm = this.sound.add('music2')
             this.bgm.setLoop(true)
@@ -321,6 +312,7 @@ export default {
             /****************************************************************/
             //return true;
             /****************************************************************/
+            if (this.isGameOver) return;
             this.bgm.stop();
             this.bgm = this.sound.add('music_end')
             this.bgm.setLoop(true)
@@ -447,6 +439,43 @@ export default {
             this.player.setScale(0.7);
             this.backgroundSpeed = 1;
         }
+
+        for (var i = 0; i < this.enemies.children.entries.length; i++) {
+                //ボスの動作
+                if (this.enemies.children.entries[i].x >= 0 && this.enemies.children.entries[i].type == 4) {
+                    this.bossTime++;
+                    if(this.bossTime>=60*4){
+                        this.bossTime=0;
+                        if(this.bossMode=="normal"){
+                            this.bossMode="angry";
+                            //this.enemies.children.entries[i].anims.play("enemybig1_angry", true);
+                        }else{
+                            this.bossMode="normal";
+                            //this.enemies.children.entries[i].anims.play("enemybig1_run", true);
+                        }
+                    }
+                    if(this.bossMode=="angry"){
+                        this.bossFireTime++;
+                        if(this.bossFireTime>=10){
+                            this.bossFireTime=0;
+                            let enemyFire = this.enemyFires.create(this.enemies.children.entries[i].x - 240, this.enemies.children.entries[i].y - 130, "enemy_water");
+                            enemyFire.anims.play("enemy_water", true);
+                            enemyFire.setSize(30, 30, 0, 0);
+                            enemyFire.setVelocityX(Phaser.Math.Between(-500, -100));
+                            enemyFire.setVelocityY(Phaser.Math.Between(-500, -100));
+                            enemyFire.setOffset(50, 50);
+                        }
+                    }
+                    if (this.enemies.children.entries[i].x <= 420) {
+                        this.enemies.children.entries[i].setVelocityX(30);
+                    }
+                    if (this.enemies.children.entries[i].x >= 570) {
+                        this.enemies.children.entries[i].setVelocityX(-30);
+                    }
+                }
+        }
+
+
         for (var i = 0; i < this.enemies.children.entries.length; i++) {
             for (var j = 0; j < this.enemyDefences.children.entries.length; j++) {
                 if (this.enemyDefences.children.entries[j].enemyId == this.enemies.children.entries[i].enemyId) {
