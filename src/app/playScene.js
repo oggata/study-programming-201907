@@ -37,7 +37,7 @@ export default {
     create() {
         this.bgm = this.sound.add('music')
         this.bgm.setLoop(true)
-        //this.bgm.play();
+        this.bgm.play();
         this.background5 = this.add.tileSprite(400, 300, 667, 250, "background5");
         this.background4 = this.add.tileSprite(400, 300, 667, 250, "background4");
         this.background3 = this.add.tileSprite(400, 300, 667, 250, "background3");
@@ -279,7 +279,7 @@ export default {
             this.bgm.stop();
             this.bgm = this.sound.add('music2')
             this.bgm.setLoop(true)
-            //this.bgm.play();
+            this.bgm.play();
         }
         this.setEnemyEffect = function (enemy) {
             if (enemy.life <= 0) {
@@ -323,7 +323,7 @@ export default {
             this.bgm.stop();
             this.bgm = this.sound.add('music_end')
             this.bgm.setLoop(true)
-            //this.bgm.play();
+            this.bgm.play();
             this.isGameOver = true;
             this.timedEvent1.paused = true;
             this.timedEvent2.paused = true;
@@ -486,7 +486,7 @@ export default {
             this.bgm.stop();
             this.bgm = this.sound.add('music')
             this.bgm.setLoop(true)
-            //this.bgm.play();
+            this.bgm.play();
         }
         if (this.invincibleTime <= 1) {
             this.invincibleTime = 0;
