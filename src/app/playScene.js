@@ -31,7 +31,7 @@ export default {
         this.bossCount = 0;
         /****************************************************************/
         //this.itemMaxTime = 999999999;
-        this.itemTime = 60*13;
+        this.itemTime = 60*14;
         this.itemMaxTime = 60*17;
         /****************************************************************/
     },
@@ -496,7 +496,7 @@ export default {
         for (var i = 0; i < this.enemies.children.entries.length; i++) {}
         if (this.isGameOver === false) {
             this.itemTime += 1;
-            if (this.itemTime % this.itemMaxTime == 0) {
+            if (this.itemTime % this.itemMaxTime == 0 && this.bossCount == 0) {
                 this.itemTime = 0;
                 let item = this.items.create(800, 120, "meat");
                 item.setScale(0.35);
