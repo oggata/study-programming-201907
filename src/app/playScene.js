@@ -25,12 +25,13 @@ export default {
         this.backgroundSpeed = 1;
         this.damageTime = 0;
         this.bones = [];
-        this.itemTime = 0;
+        
         this.invincibleTime = 0;
         this.bgm = null;
         this.bossCount = 0;
         /****************************************************************/
         //this.itemMaxTime = 999999999;
+        this.itemTime = 60*13;
         this.itemMaxTime = 60*17;
         /****************************************************************/
     },
