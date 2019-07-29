@@ -198,7 +198,7 @@ export default {
             let enemyDefence = this.enemyDefences.create(0, 400, "enemybig1");
             enemyDefence.enemyId = enemy.enemyId;
             enemyDefence.setSize(200, 300, true);
-            //enemyDefence.setOffset(100, 140);
+            enemyDefence.setOffset(300, 180);
             enemyDefence.body.setAllowGravity(false);
             enemyDefence.setAlpha(0);
             this.physics.add.existing(enemyDefence);
@@ -413,10 +413,12 @@ export default {
         //this.physics.add.collider(this.enemyDefences, this.fires);
         //オブジェクトが重なった時に発動する
         this.physics.add.overlap(this.player, this.enemies, damagePlayerByEnemy, null, this);
+        this.physics.add.overlap(this.player, this.enemyDefences, damagePlayerByEnemy, null, this);
         this.physics.add.overlap(this.player, this.enemyFires, damagePlayerByFire, null, this);
         this.physics.add.overlap(this.enemies, this.fires, damageEnemyByPlayer, null, this);
         this.physics.add.overlap(this.player, this.coins, hitPlayerToCoin, null, this);
         this.physics.add.overlap(this.player, this.items, hitPlayerToItem, null, this);
+
         this.scoreText = this.add.text(16, 16, "SCORE: 0", {
             fontSize: "32px",
             fill: "#FFFFFF"
